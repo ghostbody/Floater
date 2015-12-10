@@ -1,0 +1,7 @@
+[
+  {"uid" : 1, "username" : "admin", "online": false},
+  {"uid" : 2, "username" : "user001", "online": false},
+  {"uid" : 3, "username" : "user002", "online": false},
+  {"uid" : 4, "username" : "user003", "online": true},
+  {"uid" : 5, "username" : "user004", "online": false}
+]
