@@ -5,8 +5,11 @@
 ## Team Member
 
 叶嘉祺 Jiaqi Ye
+
 徐庆龙 Qinglong Xu
+
 彭俊杰 Junjie Peng
+
 龙嘉伟 Jiawei Long
 
 ## Docs
@@ -15,9 +18,13 @@
 ## project plan
 ###（1）项目分工以及计划进度:
 #### 分工:
+
 叶嘉祺  项目构架
+
 徐庆龙  前端编写
+
 彭俊杰  协议分析设计
+
 龙嘉伟  后台程序编写
 
 ###（2）计划进度:
