@@ -7,8 +7,8 @@ from config import *
 import threading
 
 def me(username):
-    server_name = "localhost"
-    server_port = 8002
+    server_name = "192.168.1.102"
+    server_port = 8001
     mySocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     time.sleep(5)
     try:
@@ -27,7 +27,7 @@ def me(username):
             break
 
 def far(username):
-    server_name = "localhost"
+    server_name = "192.168.1.207"
     server_port = 8001
     mySocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     time.sleep(5)
@@ -36,6 +36,7 @@ def far(username):
     except socket.error, msg:
         print '[FLOATER ERROR] Connect failed. Error Code : ' + str(msg[0]) + ' Message ' + msg[1]
         return False
+    mySocket.listen(100)
 
     connection, address = mySocket.accept()
     print "[FLOATER ACCEPT CONNECTION] ", address
