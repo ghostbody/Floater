@@ -2,6 +2,7 @@ from config import *
 
 lock = 0
 
+# set a lock to prevent multithread programming problems
 def inlock():
     lock = 1
 
@@ -10,7 +11,8 @@ def unlock():
 
 class user(object):
     """docstring for user"""
-    count = 0
+    # users[] is a static class variable which indicates
+    # the users finding pairs
     users = []
     def __init__(self):
         super(user, self).__init__()
@@ -25,19 +27,18 @@ class user(object):
         self.username = userData["username"]
         self.ip = userData["ip"]
         self.fellow = userData["fellow"]
-        
+
     def login(self, username, ip):
         while lock:
             pass
         inlock()
-        self.uid = self.count + 1
-        newUser = { "uid" : self.count+ 1,
+        self.uid = len(self.users) + 1
+        newUser = { "uid" : self.uid,
                     "username": username,
                     "ip" : ip,
                     "fellow" : -1,
                   }
         self.users.append(newUser)
-        self.count += 1
         unlock()
         return newUser
 
@@ -45,10 +46,9 @@ class user(object):
         while lock:
             pass
         inlock()
-        for each in self.users:
+        for each in self.users[:]:
             if each["uid"] == self.uid:
                 self.users.remove(each)
-        self.count -= 1;
         unlock()
 
     def findFellow(self):
@@ -56,7 +56,7 @@ class user(object):
             pass
         inlock()
         for each in self.users:
-            if each["uid"] != self.uid and each['fellow'] == -1:
+            if each["uid"] != self.uid and each["fellow"] == -1:
                 unlock()
                 return each
         unlock()
