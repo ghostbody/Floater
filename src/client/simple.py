@@ -15,11 +15,12 @@ if __name__ == "__main__":
     print user
 
     while True:
-        print "try to find fellow"
+        print "[FOATER FIND] try to find fellow"
         sock.send('{"action":"find", "user": %s}' % user)
         fellow = sock.recv(1024)
         if fellow != "None":
-            print fellow
+            print "[FLOATER FOUND]", fellow
+            sock.send('{"action":"close"}')
             break
         time.sleep(5)
 
