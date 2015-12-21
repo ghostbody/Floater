@@ -2,23 +2,34 @@
 <html><body>
   <script type="text/javascript">
     username = "Unknown"
-    function send() {
-      message = document.getElementById('message').value;
-      console.log(message);
+
+    function put(message) {
       wrap = document.getElementsByClassName('wrap');
       p = document.createElement("p");
-      p.innerHTML = username + ": " + message;
+      p.innerHTML = message;
       wrap[0].appendChild(p);
       document.getElementById('message').value = ""
-      pyObj.send(message);
+    }
+
+    function send() {
+      message_send = document.getElementById('message').value;
+      message = username + ": " + message_send
+      put(message);
+      pyObj.send(message_send);
     }
 
     function getMessage() {
+      message = pyObj.receiveMsg;
+
+      if(message != "") {
+        put(message);
+      }
 
     }
 
     window.onload = function() {
-      username = pyObj.username
+      username = pyObj.username;
+      var int=self.setInterval("getMessage()", 500);
     }
   </script>
 

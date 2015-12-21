@@ -22,22 +22,26 @@ class Floater(QtCore.QObject):
 
     @QtCore.pyqtSlot(str)
     def send(self, message):
-        chat.send_queue.put("%s: %s" % ("Bob", messge))
+        chat.send_queue.put("%s: %s" % ("Bob", message))
 
-    @QtCore.pyqtSlot(str)
+    @QtCore.pyqtSlot()
     def receive(self):
+        if chat.receive_queue.empty():
+            return ""
         message = chat.receive_queue.get()
-        q.task_done()
+        chat.receive_queue.task_done()
+        print "receive ", message
         return message
 
     """Python interpreter version property."""
+    receiveMsg = QtCore.pyqtProperty(str, fget=receive)
     username = QtCore.pyqtProperty(str, fget=getUsername)
 
 def main():
 
     print  "[FLOATER CHATER 1.0] Online line"
     # remote server
-    server_name_remote = "192.168.1.147"
+    server_name_remote = "192.168.1.102"
     server_name_local  = "192.168.1.207"
     # username
     username_local = "Alice"

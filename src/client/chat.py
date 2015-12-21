@@ -61,12 +61,14 @@ def receive(username, server_name):
             print "[FLOATER CLOSE CONNECTION] connection closed by remote"
             connection.close()
             return
-        q.put("%s: %s" % (username, messge))
+
+        print message
+        receive_queue.put("%s: %s" % (username, message))
 
 def test():
     print  "[FLOATER CHATER 1.0] Online line"
     # remote server
-    server_name_remote = "192.168.1.147"
+    server_name_remote = "192.168.1.102"
     server_name_local  = "192.168.1.207"
     # username
     username_local = "Alice"
