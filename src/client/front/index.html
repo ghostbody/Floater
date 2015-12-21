@@ -1,0 +1,74 @@
+
+<html><body>
+  <script type="text/javascript">
+    username = "Unknown"
+    function send() {
+      message = document.getElementById('message').value;
+      console.log(message);
+      wrap = document.getElementsByClassName('wrap');
+      p = document.createElement("p");
+      p.innerHTML = username + ": " + message;
+      wrap[0].appendChild(p);
+      document.getElementById('message').value = ""
+      pyObj.send(message);
+    }
+
+    function getMessage() {
+
+    }
+
+    window.onload = function() {
+      username = pyObj.username
+    }
+  </script>
+
+  <style media="screen">
+    .wrap {
+      width: 90%;
+      height: 80%;
+      background-color: rgb(180,180,180);
+      border: 5px;
+      border-radius: 10px;
+      opacity: 0.7;
+      margin: 0 auto;
+      margin-bottom: 10px;
+      overflow-y: scroll;
+      font-family: Arial;
+      font-weight: bold;
+      font-size: 15pt;
+      color: black;
+      padding: 20px;
+    }
+    .inputbox {
+      width: 95%;
+      height: 5%;
+      margin: 0 auto;
+      margin-bottom: 10px;
+    }
+    .messagebox {
+      width: 80%;
+      margin-left: 10px;
+      float: left;
+    }
+    .messagebox input {
+      width: 100%;
+    }
+    .sendbox {
+      float: left;
+      margin-left: 10px;
+    }
+  </style>
+
+  <div class="wrap">
+  </div>
+
+  <div class="inputbox">
+    <div class="messagebox">
+      <input type="text" name="message" id="message" value="">
+    </div>
+    <div class="sendbox">
+      <button type="button" name="send" id="send" onclick="send()">send</button>
+    </div>
+  </div>
+
+</body></html>
