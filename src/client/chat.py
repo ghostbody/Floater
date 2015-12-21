@@ -10,9 +10,8 @@ send_queue = Queue.Queue()
 receive_queue = Queue.Queue()
 
 def send(username, server_name):
-    #server_name = "192.168.1.102"
     mySocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    time.sleep(5)
+    time.sleep(1)
     while True:
         try:
             mySocket.connect((server_name, server_port))
@@ -24,6 +23,7 @@ def send(username, server_name):
     while True:
         message = send_queue.get()
         send_queue.task_done()
+        print "[FLOATER ERROR] send message to remote"
         try:
             mySocket.send(message)
         except Exception as e:
@@ -36,9 +36,8 @@ def send(username, server_name):
         print "[%s]: %s" % (username, message)
 
 def receive(username, server_name):
-    #server_name = "192.168.1.207"
     mySocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    time.sleep(5)
+    time.sleep(1)
     try:
         mySocket.bind((server_name, server_port))
     except socket.error, msg:
@@ -52,18 +51,19 @@ def receive(username, server_name):
     while True:
         try:
             message = connection.recv(1024)
+            print "[FLOATER RECIEVE] receive message from remote"
         except Exception as e:
             print "[FLOATER ERROR] ", e
             return
 
-        # if get close messge from remote, then close connection
+        # if get close message from remote, then close connection
         if message == "$$CLOSE$$" or message == "":
             print "[FLOATER CLOSE CONNECTION] connection closed by remote"
             connection.close()
             return
 
-        print message
-        receive_queue.put("%s: %s" % (username, message))
+        receive_queue.put("%s" % (message))
+
 
 def test():
     print  "[FLOATER CHATER 1.0] Online line"

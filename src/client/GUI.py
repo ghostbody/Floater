@@ -6,6 +6,13 @@ import chat
 import threading
 import os
 
+import sys
+reload(sys)
+sys.setdefaultencoding('utf8')
+
+username_local = "Alice"
+username_remote = "Bob"
+
 html = open(os.path.join("front", "index.html")).read()
 
 class Floater(QtCore.QObject):
@@ -18,11 +25,11 @@ class Floater(QtCore.QObject):
 
     def getUsername(self):
         """Return the Python version."""
-        return "Bob"
+        return username_local
 
     @QtCore.pyqtSlot(str)
     def send(self, message):
-        chat.send_queue.put("%s: %s" % ("Bob", message))
+        chat.send_queue.put("%s" % (message))
 
     @QtCore.pyqtSlot()
     def receive(self):
@@ -30,8 +37,8 @@ class Floater(QtCore.QObject):
             return ""
         message = chat.receive_queue.get()
         chat.receive_queue.task_done()
-        print "receive ", message
-        return message
+        message = message.decode('utf-8')
+        return username_remote + " :" + message
 
     """Python interpreter version property."""
     receiveMsg = QtCore.pyqtProperty(str, fget=receive)
@@ -44,9 +51,6 @@ def main():
     server_name_remote = "192.168.1.102"
     server_name_local  = "192.168.1.207"
     # username
-    username_local = "Alice"
-    username_remote = "Bob"
-
     # start two thread
     # thread t1 is a scoket that connect to the remote peer, and receive messgae from remote
     t1 = threading.Thread(target=chat.receive, args=(username_remote, server_name_local))
