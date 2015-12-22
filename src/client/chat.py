@@ -6,12 +6,18 @@ from config import *
 import threading
 import Queue
 
+"""these two queues are use for thread comunication"""
+# message sending queue
 send_queue = Queue.Queue()
+# message receive queue
 receive_queue = Queue.Queue()
 
 def send(username, server_name):
+    """This function is use for sending threading"""
     mySocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    # wait 1 second before connection
     time.sleep(1)
+
     while True:
         try:
             mySocket.connect((server_name, server_port))
@@ -21,6 +27,7 @@ def send(username, server_name):
             time.sleep(1)
 
     while True:
+        # get a message from the send_queue and then send the message to remote
         message = send_queue.get()
         send_queue.task_done()
         print "[FLOATER ERROR] send message to remote"
@@ -29,7 +36,7 @@ def send(username, server_name):
         except Exception as e:
             print "[FLOATER ERROR] ", e
             break
-        # if user send close close message, close the connection
+        # if user send close message, close the connection
         if message == "$$CLOSE$$":
             print "[FLOATER CLOSE CONNECTION] connection closed by you"
             break
@@ -63,26 +70,6 @@ def receive(username, server_name):
             return
 
         receive_queue.put("%s" % (message))
-
-
-def test():
-    print  "[FLOATER CHATER 1.0] Online line"
-    # remote server
-    server_name_remote = "192.168.1.102"
-    server_name_local  = "192.168.1.207"
-    # username
-    username_local = "Alice"
-    username_remote = "Bob"
-
-    # start two thread
-    # thread t1 is a scoket that connect to the remote peer, and receive messgae from remote
-    t1 = threading.Thread(target=receive, args=(username_remote, server_name_local))
-    # thread t2 is a socket that listen a port in local and send message to remote
-    t2 = threading.Thread(target=send, args=(username_local, server_name_remote))
-
-    t1.start()
-    t2.start()
-
 
 if __name__ == '__main__':
     test()
