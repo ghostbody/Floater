@@ -15,6 +15,14 @@
 ## Docs
 [Protocol 0.5](https://github.com/ghostbody/computer-network/blob/master/doc/protocolV0.5.md) protocol prototype
 
+## Eviroment Request
+
+Python 2.7
+PyQt4
+
+Any Operating System is available.
+
+
 ## project plan
 ###（1）项目分工以及计划进度:
 #### 分工:
