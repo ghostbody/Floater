@@ -22,6 +22,8 @@ PyQt4
 
 Any Operating System is available.
 
+## Notice
+每次写代码和文档之前请执行git fetch更新fork和源仓库同步
 
 ## project plan
 ###（1）项目分工以及计划进度:
