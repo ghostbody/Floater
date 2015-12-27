@@ -6,47 +6,97 @@
 <body>
   <script type="text/javascript">
     username = "Unknown"
-
-    function put(message) {
-      wrap = document.getElementsByClassName('wrap');
-      p = document.createElement("p");
-      p.innerHTML = message;
-      wrap[0].appendChild(p);
-      document.getElementById('message').value = ""
+    function searching() {
+      regist=document.getElementById("regist");
+      main=document.getElementById("chatroom");
+      regist.style.display = "none";
+      main.style.display = "inline";
     }
-
-    function send() {
-      message_send = document.getElementById('message').value;
-      message = username + ": " + message_send
-      put(message);
-      pyObj.send(message_send);
-    }
-
-    function getMessage() {
-      message = pyObj.receiveMsg;
-
-      if(message != "") {
-        put(message);
-      }
-
-    }
+    // function put(message) {
+    //   wrap = document.getElementsByClassName('wrap');
+    //   p = document.createElement("p");
+    //   p.innerHTML = message;
+    //   wrap[0].appendChild(p);
+    //   document.getElementById('message').value = ""
+    // }
+    //
+    // function send() {
+    //   message_send = document.getElementById('message').value;
+    //   message = username + ": " + message_send
+    //   put(message);
+    //   pyObj.send(message_send);
+    // }
+    //
+    // function getMessage() {
+    //   message = pyObj.receiveMsg;
+    //
+    //   if(message != "") {
+    //     put(message);
+    //   }
+    //
+    // }
 
     window.onload = function() {
-      username = pyObj.username;
-      var int=self.setInterval("getMessage()", 500);
+      // username = pyObj.username;
+      // var int=self.setInterval("getMessage()", 500);
+      floater = document.getElementsByClassName("searchbox");
+      floater[0].onclick = function(){searching()};
     }
   </script>
 
   <style media="screen">
+    html {
+     height: 100%;
+    }
+    body {
+      padding-top: 5%;
+      background-color: rgb(66,150,255);
+       height: 90%;
+    }
+    input {
+      border-radius: 10px;
+      height: 25pt;
+      font-size: 20pt;
+      padding-left: 5px;
+    }
+    #regist {
+      display: inline;
+    }
+    #chatroom {
+      display: none;
+    }
+    .registbox{
+      width: 95%;
+      height: 30%;
+      text-align: center;
+    }
+    .namebox input {
+      width: 40%;
+    }
+    .namebox {
+      padding-top: 150px;
+      padding-bottom: 150px;
+      height: 50px;
+      width: 100%;
+    }
+    .searchbox{
+      border-radius: 50%;
+      height: 128px;
+      width: 128px;
+      margin: auto;
+      background-image: url("../../../pic/floater.png");
+
+    }
     .wrap {
-      width: 90%;
-      height: 80%;
-      background-color: rgb(180,180,180);
+      width: 80%;
+      min-width: 100px;
+      height: 70%;
+      background-color: white;
       border: 5px;
       border-radius: 10px;
       opacity: 0.7;
       margin: 0 auto;
-      margin-bottom: 10px;
+      margin-bottom: 5%;
       overflow-y: scroll;
       font-family: Arial;
       font-weight: bold;
@@ -55,35 +105,46 @@
       padding: 20px;
     }
     .inputbox {
-      width: 95%;
+      width: 90%;
       height: 5%;
       margin: 0 auto;
-      margin-bottom: 10px;
+      text-align: center;
     }
     .messagebox {
-      width: 80%;
+      width: 100%;
       margin-left: 10px;
-      float: left;
     }
     .messagebox input {
-      width: 100%;
-    }
-    .sendbox {
       float: left;
-      margin-left: 10px;
+      width: 70%;
+    }
+    .sendbox button {
+      background-color: rgb(121, 204, 223);
+      border-radius: 10px;
+      height: 25pt;
+      width: 20%;
+      float: right;
     }
   </style>
-
-  <div class="wrap">
-  </div>
-
-  <div class="inputbox">
-    <div class="messagebox">
-      <input type="text" name="message" id="message" value="">
-    </div>
-    <div class="sendbox">
-      <button type="button" name="send" id="send" onclick="send()">send</button>
+  <div id="regist">
+    <div class="registbox">
+      <div class="namebox">
+        <input type="text" name="myname" id="myname" value="">
+      </div>
+      <div class="searchbox">
+      </div>
     </div>
   </div>
-
+  <div id="chatroom">
+    <div class="wrap">
+    </div>
+    <div class="inputbox">
+      <div class="messagebox">
+        <input type="text" name="message" id="message" value="">
+      </div>
+      <div class="sendbox">
+        <button type="button" name="send" id="send" onclick="send()">send</button>
+      </div>
+    </div>
+  </div>
 </body></html>
