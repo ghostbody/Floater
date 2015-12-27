@@ -16,15 +16,12 @@ username_remote = ""
 html = open(os.path.join("front", "index.html")).read()
 
 class Floater(QtCore.QObject):
-    """Simple class with one slot and one read-only property."""
-
     @QtCore.pyqtSlot(str)
     def showMessage(self, msg):
         """Open a message box and display the specified message."""
         QtGui.QMessageBox.information(None, "hahhahah", msg)
 
     def getUsername(self):
-        """Return the Python version."""
         return username_local
 
     @QtCore.pyqtSlot(str)
@@ -40,6 +37,5 @@ class Floater(QtCore.QObject):
         message = message.decode('utf-8')
         return username_remote + " :" + message
 
-    """Python interpreter version property."""
     receiveMsg = QtCore.pyqtProperty(str, fget=receive)
     username = QtCore.pyqtProperty(str, fget=getUsername)
