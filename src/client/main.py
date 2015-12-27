@@ -23,14 +23,11 @@ def main():
     t2.start()
 
     app = QtGui.QApplication(sys.argv)
-
     myObj = GUI.Floater()
-
     webView = QtWebKit.QWebView()
     # Make myObj exposed as JavaScript object named 'pyObj'
     webView.page().mainFrame().addToJavaScriptWindowObject("pyObj", myObj)
     webView.setHtml(GUI.html)
-
     window = QtGui.QMainWindow()
     window.setCentralWidget(webView)
     window.show()
