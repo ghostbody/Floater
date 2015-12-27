@@ -1,6 +1,7 @@
 import sys
 from PyQt4 import QtCore, QtGui, QtWebKit
 
+from config import *
 import chat
 import GUI
 import threading
@@ -27,7 +28,8 @@ def main():
     webView = QtWebKit.QWebView()
     # Make myObj exposed as JavaScript object named 'pyObj'
     webView.page().mainFrame().addToJavaScriptWindowObject("pyObj", myObj)
-    webView.setHtml(GUI.html)
+    webView.setHtml(GUI.html, QtCore.QUrl(system_path));
+
     window = QtGui.QMainWindow()
     window.setCentralWidget(webView)
     window.show()
