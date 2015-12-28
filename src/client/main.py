@@ -31,6 +31,8 @@ def main():
     webView.setHtml(GUI.html, QtCore.QUrl(system_path));
 
     window = QtGui.QMainWindow()
+    window.setMaximumSize(700, 700)
+    window.setMinimumSize(700, 700)
     window.setCentralWidget(webView)
     window.show()
 
