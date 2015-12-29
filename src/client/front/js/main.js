@@ -1,7 +1,10 @@
 username = "Unknown"
 function searching() {
-  $("#login_container").delay(1000).hide(1000);
-  $("#chartroom_container").delay(1000).show(1000);
+  //  while(pyObj.isLogin) {
+   //
+  //  }
+    $("#login_container").hide(1000);
+    $("#chartroom_container").show(1000);
 }
 
 function putMessage(username, method, content) {
