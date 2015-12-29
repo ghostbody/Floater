@@ -11,8 +11,6 @@ def main():
 
     print  "[FLOATER CHATER 1.0] Online line"
     # remote server
-    GUI.server_name_remote = "192.168.1.102"
-    GUI.server_name_local  = "192.168.1.207"
 
     # start two thread
     # thread t1 is a scoket that connect to the remote peer, and receive messgae from remote
@@ -22,7 +20,6 @@ def main():
 
     t1.start()
     t2.start()
-
     app = QtGui.QApplication(sys.argv)
     myObj = GUI.Floater()
     webView = QtWebKit.QWebView()

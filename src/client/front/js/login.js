@@ -13,8 +13,9 @@ $(document).ready(function() {
     $('#shclCcw').css("margin", "0 auto");
     $($('.namebox')[0]).hide();
     $($(".hint")[0]).show();
-
+    pyObj.setUsername(username);
+    // pyObj.sendLocal();
     searching();
-
+    // pyObj.setThreads();
   });
 });
