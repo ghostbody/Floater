@@ -28,7 +28,7 @@ def main():
     webView = QtWebKit.QWebView()
     # Make myObj exposed as JavaScript object named 'pyObj'
     webView.page().mainFrame().addToJavaScriptWindowObject("pyObj", myObj)
-    webView.setHtml(GUI.html, QtCore.QUrl(system_path));
+    webView.setUrl(QtCore.QUrl('./front/index.html'));
 
     window = QtGui.QMainWindow()
     window.setMaximumSize(700, 700)
