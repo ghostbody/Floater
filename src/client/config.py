@@ -8,4 +8,4 @@ sys.setdefaultencoding('utf8')
 server_name = "192.168.1.207"
 server_port = 8001
 
-system_path = ("file://%s/front/" % sys.path[0]).replace("\\", "/")
+system_path = (u"file:///%s/front/" % sys.path[0])
