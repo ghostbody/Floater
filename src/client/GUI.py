@@ -55,7 +55,7 @@ class Floater(QtCore.QObject):
     @QtCore.pyqtSlot(str)
     def send(self, message):
         chat.send_queue.put("%s" % (message))
-
+	#自己说的话不用显示？
     @QtCore.pyqtSlot()
     def receive(self):
         if chat.receive_queue.empty():
