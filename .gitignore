@@ -1,1 +1,3 @@
-pic/Thumbs.db
+*Thumbs.db
+*.pyc
+.idea
