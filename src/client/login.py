@@ -17,7 +17,7 @@ def sendLocal(username_local, server_name_local):
 	#检测服务器是否关闭
 	except socket.timeout:
 		print "Error:timeout"
-	sock.send('{"action":"login","uid":0,"username":"&s","ip":"%s"}' %(username_local,server_name_local))
+	sock.send('{"action":"login","uid":0,"username":"%s","ip":"%s"}' %(username_local,server_name_local))
 	sock.send('{"action":"close"}')
 	sock.close()
 
@@ -31,6 +31,7 @@ def getUser():
 	#检测服务器是否关闭
 	except socket.timeout:
 		print "Error:timeout"
+		return None
 	u = user.user()
 	while True:
 		print "[FOATER FIND] try to find fellow"
