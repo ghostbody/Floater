@@ -1,12 +1,15 @@
 username = "Unknown"
 function searching() {
-  //  while(pyObj.isLogin) {
-   //
-  //  }
+    checking();
+}
+function checking() {
+  if(!pyObj.isLogin) {
+    clearInterval(timer1);
     $("#login_container").hide(1000);
     $("#chartroom_container").show(1000);
+    pyObj.setThreads();
+  }
 }
-
 function putMessage(username, method, content) {
   if(method == "left") {
     trueContent = '<div class="message_left"><div class="from"><span class="username">'

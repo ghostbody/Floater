@@ -6,7 +6,7 @@ import chat
 import login
 import threading
 import os
-
+import user
 import sys
 import socket
 reload(sys)
@@ -28,19 +28,21 @@ class Floater(QtCore.QObject):
         return username_local
 
 
-    # @QtCore.pyqtSlot()
-    # def sendLocal(self):
-    #     login.sendLocal(username_local,server_name_local)
+    @QtCore.pyqtSlot()
+    def sendLocal(self):
+        login.sendLocal(username_local,server_name_local)
 
     @QtCore.pyqtSlot()
     def getRemote(self):
-        # username_remote = login.getUsername()
-        # server_name_remote = login.getServername()
+        print "!!!"
+        user_remote = login.getUser()
+        print "!!!"
+        username_remote = user_remote.username
+        server_name_remote = user_remote.ip
         if username_remote == "" or server_name_remote == server_name_local:
             return True;
         else:
             return False;
-
 
     @QtCore.pyqtSlot()
     def setThreads(self):
@@ -53,11 +55,12 @@ class Floater(QtCore.QObject):
     @QtCore.pyqtSlot(str)
     def setUsername(self, message):
         username_local = message
+        login.sendLocal(username_local,server_name_local)
 
     @QtCore.pyqtSlot(str)
     def send(self, message):
         chat.send_queue.put("%s" % (message))
-	#自己说的话不用显示？
+
     @QtCore.pyqtSlot()
     def receive(self):
         if chat.receive_queue.empty():

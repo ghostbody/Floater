@@ -50,7 +50,6 @@ class user(object):
             if each["uid"] == self.uid:
                 self.users.remove(each)
         unlock()
-	#不用修改fellow 的值？
     def findFellow(self):
         while lock:
             pass
