@@ -40,6 +40,7 @@ def clientthread(connection, address):
             print"[FLOATER CLOSE CONNECTION] ", address
             print e, traceback.print_exc()
             connection.close()
+            exit()
             return
         time.sleep(1)
     #came out of loop

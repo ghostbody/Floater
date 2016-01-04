@@ -30,10 +30,7 @@ def getUser(username_local, server_name_local):
 		if fellow != "None":
 			print "[FLOATER FOUND]", fellow
 			userData = json.loads(fellow)
-			u.uid = userData["uid"]
-			u.username = userData["username"]
-			u.ip = userData["ip"]
-			u.fellow = userData["fellow"]
+			u.set(userData)
 			break
 		time.sleep(5)
 	sock.send('{"action":"close"}')
