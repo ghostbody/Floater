@@ -1,4 +1,3 @@
-
 $(document).ready(function() {
   $("#loginButton").click(function() {
     // golabal var username
@@ -8,7 +7,6 @@ $(document).ready(function() {
       alert("please input username");
       return false;
     }
-
     $('#shclCcw').shCircleLoader({color:"white", clockwise:false});
     $('#shclCcw').css("margin", "0 auto");
     $($('.namebox')[0]).hide();
@@ -16,6 +14,5 @@ $(document).ready(function() {
     pyObj.setUsername(username);
     // pyObj.sendLocal();
     searching();
-    // pyObj.setThreads();
   });
 });
