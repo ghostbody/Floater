@@ -1,8 +1,5 @@
 username = "Unknown"
 function searching() {
-    checking();
-}
-function checking() {
   if(!pyObj.isLogin) {
     clearInterval(timer1);
     $("#login_container").hide(1000);

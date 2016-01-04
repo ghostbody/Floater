@@ -27,6 +27,10 @@ class Floater(QtCore.QObject):
     def getUsername(self):
         return username_local
 
+    @QtCore.pyqtSlot(str)
+    def setUsername(self, message):
+        global username_local
+        username_local = message
 
     @QtCore.pyqtSlot()
     def sendLocal(self):
@@ -35,7 +39,7 @@ class Floater(QtCore.QObject):
     @QtCore.pyqtSlot()
     def getRemote(self):
         print "!!!"
-        user_remote = login.getUser()
+        user_remote = login.getUser(username_local,server_name_local)
         print "!!!"
         username_remote = user_remote.username
         server_name_remote = user_remote.ip
@@ -52,10 +56,6 @@ class Floater(QtCore.QObject):
         t1.start()
         t2.start()
 
-    @QtCore.pyqtSlot(str)
-    def setUsername(self, message):
-        username_local = message
-        login.sendLocal(username_local,server_name_local)
 
     @QtCore.pyqtSlot(str)
     def send(self, message):
