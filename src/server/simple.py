@@ -38,7 +38,6 @@ def clientthread(connection, address):
         except Exception as e:
             auser.logout()
             print"[FLOATER CLOSE CONNECTION] ", address
-            print "qwe!!!"
             print e, traceback.print_exc()
             connection.close()
             return
