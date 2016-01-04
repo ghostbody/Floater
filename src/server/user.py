@@ -50,7 +50,10 @@ class user(object):
             if each["uid"] == self.uid:
                 self.users.remove(each)
         unlock()
+<<<<<<< HEAD
 
+=======
+>>>>>>> 59e49c974d9982f35e5198a6c374364ff65084c5
     def findFellow(self):
         while lock:
             pass

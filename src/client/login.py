@@ -37,6 +37,7 @@ def getUser():
 		print "[FOATER FIND] try to find fellow"
 		sock.send('{"action":"find"}')
 		fellow = sock.recv(1024)
+		print fellow
 		if fellow != "None":
 			print "[FLOATER FOUND]", fellow
 			userData = json.loads(fellow)
