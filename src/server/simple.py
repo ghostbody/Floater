@@ -16,6 +16,8 @@ def clientthread(connection, address):
         try:
             buf = connection.recv(1024)
             data = json.loads(buf)
+            print buf
+            print data
             if data["action"] == "login":
                 newUser = auser.login(data["username"], address[0])
                 print "[FLOATER LOGIN] ", address
