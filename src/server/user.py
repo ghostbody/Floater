@@ -1,5 +1,5 @@
 from config import *
-
+import json
 lock = 0
 
 # set a lock to prevent multithread programming problems
@@ -58,7 +58,7 @@ class user(object):
         for each in self.users:
             if each["uid"] != self.uid and each["fellow"] == -1:
                 unlock()
-                return each
+                return json.dumps(each)
         unlock()
 
         return None

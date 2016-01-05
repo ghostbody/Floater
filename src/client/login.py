@@ -5,8 +5,9 @@ import time
 import json
 import time
 import user
+import GUI
 from config import *
-
+from GUI import *
 #将两个函数合并为一个函数，返回值是user
 def getUser(username_local, server_name_local):
 	#连接服务器
@@ -24,7 +25,7 @@ def getUser(username_local, server_name_local):
 	u = user.user()
 	u.set(json.loads(userdata))
 	while True:
-		print "[FOATER FIND] try to find fellow"
+		print "[FLOATER FIND] try to find fellow"
 		sock.send('{"action":"find"}')
 		fellow = sock.recv(1024)
 		if fellow != "None":
@@ -38,4 +39,4 @@ def getUser(username_local, server_name_local):
 		time.sleep(5)
 	sock.send('{"action":"close"}')
 	sock.close()
-	return u
+	GUI.setRemote(u)

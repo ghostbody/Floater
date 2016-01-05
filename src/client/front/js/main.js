@@ -1,10 +1,17 @@
 username = "Unknown"
 function searching() {
-  if(!pyObj.isLogin) {
-    clearInterval(timer1);
+  pyObj.searchThread();
+  t = setInterval("checking()",1000);
+}
+function checking() {
+  aval = pyObj.isLogin;
+  if (!aval) {
     $("#login_container").hide(1000);
     $("#chartroom_container").show(1000);
     pyObj.setThreads();
+    clearInterval(t);
+  } else {
+    ;
   }
 }
 function putMessage(username, method, content) {

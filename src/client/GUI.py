@@ -17,6 +17,13 @@ username_remote = ""
 server_name_remote = ""
 server_name_local  = socket.gethostbyname(socket.gethostname())
 
+@QtCore.pyqtSlot()
+def setRemote(user_remote):
+    global username_remote
+    username_remote = user_remote.username
+    global server_name_remote
+    server_name_remote = user_remote.ip
+
 class Floater(QtCore.QObject):
     @QtCore.pyqtSlot(str)
     def showMessage(self, msg):
@@ -33,17 +40,17 @@ class Floater(QtCore.QObject):
         username_local = message
 
     @QtCore.pyqtSlot()
-    def sendLocal(self):
-        login.sendLocal(username_local,server_name_local)
+    def searchThread(self):
+        t3 = threading.Thread(target=login.getUser, args=(username_local,server_name_local))
+        t3.start()
+
+    @QtCore.pyqtSlot()
+    def aaa(self):
+        return username_remote
 
     @QtCore.pyqtSlot()
     def getRemote(self):
-        print "!!!"
-        user_remote = login.getUser(username_local,server_name_local)
-        print "!!!"
-        username_remote = user_remote.username
-        server_name_remote = user_remote.ip
-        if username_remote == "" or server_name_remote == server_name_local:
+        if username_remote == "":
             return True;
         else:
             return False;
