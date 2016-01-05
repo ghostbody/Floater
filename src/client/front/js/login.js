@@ -13,6 +13,6 @@ $(document).ready(function() {
     $($(".hint")[0]).show();
     pyObj.setUsername(username);
     // pyObj.sendLocal();
-    searching(username);
+    searching();
   });
 });
