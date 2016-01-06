@@ -1,4 +1,4 @@
 
 # server config
-server_name = "localhost"
-server_port = 8001
+server_name = "192.168.1.147"
+server_port = 8002

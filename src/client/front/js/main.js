@@ -8,9 +8,11 @@ function checking() {
   if (!aval) {
     $("#login_container").hide(1000);
     $("#chartroom_container").show(1000);
+    $("#localName").text(pyObj.username);
+    $("#remoteName").text(pyObj.remotename);
     pyObj.setThreads();
     clearInterval(t);
-    setInterval("getMessage()",1000);
+    t = setInterval("getMessage()",1000);
   } else {
     ;
   }
@@ -18,10 +20,10 @@ function checking() {
 function putMessage(username, method, content) {
   if(method == "left") {
     trueContent = '<div class="message_left"><div class="from"><span class="username">'
-    + username + ' </span>says:</div><div class="content"><span>'+ content +'</span></div></div>'
+    + pyObj.remotename + ' </span>says:</div><div class="content"><span>'+ content +'</span></div></div>'
   } else {
     trueContent = '<div class="message_right"><div class="from"><span class="username">'
-    + username + ' </span>says:</div><div class="content"><span>'+ content +'</span></div></div>'
+    + pyObj.username + ' </span>says:</div><div class="content"><span>'+ content +'</span></div></div>'
   }
   $("#wrap .panel-body").append(trueContent);
 }
@@ -35,7 +37,7 @@ function getMessage() {
   message = pyObj.receiveMsg;
 
   if(message != "") {
-    putMessage(pyObj.username,"left",message);
+    putMessage(pyObj.username, "left", message);
   }
 
 }
