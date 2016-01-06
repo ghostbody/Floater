@@ -12,7 +12,7 @@ send_queue = Queue.Queue()
 # message receive queue
 receive_queue = Queue.Queue()
 
-def send(username, server_name):
+def send(username, server_name_remote):
     """This function is use for sending threading"""
     mySocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     # wait 1 second before connection
@@ -20,7 +20,7 @@ def send(username, server_name):
 
     while True:
         try:
-            mySocket.connect((server_name, server_port))
+            mySocket.connect((server_name_remote, server_port))
             break;
         except socket.error, msg:
             print '[FLOATER ERROR] Connect failed. Error Code : ' + str(msg[0]) + ' ' + msg[1]
@@ -42,16 +42,15 @@ def send(username, server_name):
             break
         print "[%s]: %s" % (username, message)
 
-def receive(username, server_name):
+def receive(username, server_name_remote):
     mySocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     time.sleep(1)
     try:
-        mySocket.bind((server_name, server_port))
+        mySocket.bind((server_name_remote, server_port))
     except socket.error, msg:
         print '[FLOATER ERROR] Connect failed. Error Code : ' + str(msg[0]) + ' Message ' + msg[1]
         return False
     mySocket.listen(100)
-
     connection, address = mySocket.accept()
     print "[FLOATER ACCEPT CONNECTION] ", address
 

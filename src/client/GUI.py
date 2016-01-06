@@ -34,6 +34,10 @@ class Floater(QtCore.QObject):
     def getUsername(self):
         return username_local
 
+    @QtCore.pyqtSlot()
+    def getRemotename(self):
+        return username_remote
+
     @QtCore.pyqtSlot(str)
     def setUsername(self, message):
         global username_local
@@ -57,6 +61,8 @@ class Floater(QtCore.QObject):
 
     @QtCore.pyqtSlot()
     def setThreads(self):
+        print username_remote, server_name_local
+        print username_local, server_name_remote
         t1 = threading.Thread(target=chat.receive, args=(username_remote, server_name_local))
         # thread t2 is a socket that listen a port in local and send message to remote
         t2 = threading.Thread(target=chat.send, args=(username_local, server_name_remote))
@@ -75,8 +81,9 @@ class Floater(QtCore.QObject):
         message = chat.receive_queue.get()
         chat.receive_queue.task_done()
         message = message.decode('utf-8')
-        return username_remote + " :" + message
+        return message
 
     receiveMsg = QtCore.pyqtProperty(str, fget=receive)
     username = QtCore.pyqtProperty(str, fget=getUsername)
+    remotename = QtCore.pyqtProperty(str, fget=getRemotename)
     isLogin = QtCore.pyqtProperty(bool, fget=getRemote)

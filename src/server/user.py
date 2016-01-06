@@ -1,9 +1,5 @@
 from config import *
 import json
-<<<<<<< HEAD
-
-=======
->>>>>>> 14f3ac411f826ecc1b537b1af34ac9373e54925d
 lock = 0
 
 # set a lock to prevent multithread programming problems
