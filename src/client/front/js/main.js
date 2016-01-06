@@ -10,6 +10,7 @@ function checking() {
     $("#chartroom_container").show(1000);
     pyObj.setThreads();
     clearInterval(t);
+    t = setInterval("getMessage()",1000);
   } else {
     ;
   }
@@ -29,19 +30,19 @@ function putTitle(remoteUsername) {
   $("#username").text(remoteUsername);
 }
 
-//
-// function getMessage() {
-//   message = pyObj.receiveMsg;
-//
-//   if(message != "") {
-//     put(message);
-//   }
-//
-// }
+
+function getMessage() {
+  message = pyObj.receiveMsg;
+
+  if(message != "") {
+    putMessage(pyObj.username, "left", message);
+  }
+
+}
 
 function sendMessage(message_send) {
   putMessage(username, "right", message_send);
-  // pyObj.send(message_send);
+  pyObj.send(message_send);
 }
 
 $(document).ready(function() {
