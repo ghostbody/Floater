@@ -2,15 +2,15 @@ import sys
 from PyQt4 import QtCore, QtGui, QtWebKit
 
 from config import *
-import chat
+import post
 import GUI
+from info import info
+
 import threading
 import os
 
 def main():
-
-    print  "[FLOATER CHATER 1.0] Online line"
-    # remote server
+    info("client online", "info")
 
     app = QtGui.QApplication(sys.argv)
     myObj = GUI.Floater()

@@ -1,9 +1,6 @@
 #coding:utf-8
 
 from PyQt4 import QtCore, QtGui, QtWebKit
-
-import chat
-import login
 import threading
 import os
 import user
@@ -12,71 +9,63 @@ import socket
 reload(sys)
 sys.setdefaultencoding('utf8')
 
-username_local = ""
-username_remote = ""
-server_name_remote = ""
-server_name_local  = socket.gethostbyname(socket.gethostname())
-
-@QtCore.pyqtSlot()
-def setRemote(user_remote):
-    global username_remote
-    username_remote = user_remote.username
-    global server_name_remote
-    server_name_remote = user_remote.ip
+import post
 
 class Floater(QtCore.QObject):
+    postMan = post.PostMan()
+
     @QtCore.pyqtSlot(str)
     def showMessage(self, msg):
         """Open a message box and display the specified message."""
-        QtGui.QMessageBox.information(None, "hahhahah", msg)
+        QtGui.QMessageBox.information(None, "FLOATER 1.0", msg)
 
     @QtCore.pyqtSlot()
     def getUsername(self):
-        return username_local
+        return post.username_local
+
+    @QtCore.pyqtSlot()
+    def getRemotename(self):
+        return post.username_remote
 
     @QtCore.pyqtSlot(str)
-    def setUsername(self, message):
-        global username_local
-        username_local = message
-
-    @QtCore.pyqtSlot()
-    def searchThread(self):
-        t3 = threading.Thread(target=login.getUser, args=(username_local,server_name_local))
-        t3.start()
-
-    @QtCore.pyqtSlot()
-    def aaa(self):
-        return username_remote
+    def setUsername(self, username):
+        post.username_local = username
 
     @QtCore.pyqtSlot()
     def getRemote(self):
-        if username_remote == "":
+        if post.username_remote == "":
             return True;
         else:
             return False;
 
     @QtCore.pyqtSlot()
-    def setThreads(self):
-        t1 = threading.Thread(target=chat.receive, args=(username_remote, server_name_local))
-        # thread t2 is a socket that listen a port in local and send message to remote
-        t2 = threading.Thread(target=chat.send, args=(username_local, server_name_remote))
-        t1.start()
-        t2.start()
+    def searchThread(self):
+        self.postMan.start_search()
 
+    @QtCore.pyqtSlot()
+    def setThreads(self):
+        self.postMan.start_chat()
 
     @QtCore.pyqtSlot(str)
     def send(self, message):
-        chat.send_queue.put("%s" % (message))
+        # chat.send_queue.put("%s" % (message))
+        self.postMan.post_message("%s" % message)
 
     @QtCore.pyqtSlot()
     def receive(self):
-        if chat.receive_queue.empty():
+        # if chat.receive_queue.empty():
+        #     return ""
+        # message = chat.receive_queue.get()
+        # chat.receive_queue.task_done()
+        # message = message.decode('utf-8')
+        # return message
+        message = self.postMan.get()
+        if(message == None):
             return ""
-        message = chat.receive_queue.get()
-        chat.receive_queue.task_done()
-        message = message.decode('utf-8')
-        return username_remote + " :" + message
+        else:
+            return message
 
     receiveMsg = QtCore.pyqtProperty(str, fget=receive)
     username = QtCore.pyqtProperty(str, fget=getUsername)
+    remotename = QtCore.pyqtProperty(str, fget=getRemotename)
     isLogin = QtCore.pyqtProperty(bool, fget=getRemote)

@@ -13,7 +13,7 @@ def getUser(username_local, server_name_local):
 	#连接服务器
 	try:
 		sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-		sock.connect((server_name, server_port))
+		sock.connect((server_name, remote_server_port))
 		sock.settimeout(15)
 	#检测服务器是否关闭
 	except socket.timeout:
