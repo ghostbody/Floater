@@ -106,7 +106,7 @@ class ClientPostOffice(object):
         while True:
             try:
                 message = connection.recv(1024)
-                info("receive message from remote", "info")
+                info("receive message from remote: %s" % message, "info")
             except Exception as e:
                 info(e, "error")
                 return

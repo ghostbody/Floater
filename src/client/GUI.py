@@ -60,6 +60,7 @@ class Floater(QtCore.QObject):
         # message = message.decode('utf-8')
         # return message
         message = self.postMan.get()
+        print message
         if(message == None):
             return ""
         else:
