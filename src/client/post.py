@@ -20,14 +20,14 @@ receive_queue = Queue.Queue()
 username_local = ""
 username_remote = ""
 server_name_remote = ""
-server_name_local  = socket.gethostbyname(socket.gethostname())
+# server_name_local  = socket.gethostbyname(socket.gethostname())
+server_name_local = "192.168.1.159"
 
 class ServerPostOffice(object):
     """docstring for ServerPostOffice"""
     def __init__(self):
         super(ServerPostOffice, self).__init__()
         self.sock = None
-        self.user = None
 
     def getUser(self, username, server):
     	#连接服务器
@@ -152,10 +152,10 @@ class PostMan(object):
         package = letter.letter()
         package.materialize(remote_message)
         if package.message["close"] == True:
-            stop_work()
-        elif package.message["contentT"] == "text":
-            return package["content"]
-        elif package.message["contentT"] == "image":
+            self.stop_work()
+        elif package.message["contentT"] == "Text":
+            return package.message["content"]
+        elif package.message["contentT"] == "Image":
             # here need to be modified
             return None
         else:

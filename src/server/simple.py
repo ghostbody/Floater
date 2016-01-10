@@ -26,7 +26,6 @@ def clientthread(connection, address):
                 connection.send(str(result))
             elif data["action"] == "logout":
                 auser.logout()
-                print "[FLOATER FIND FELLOW] user:", address, "find", result
                 connection.send(str("{statu: OK}"))
             elif data["action"] == "close":
                 print"[FLOATER CLOSE CONNECTION] ", address
