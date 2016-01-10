@@ -84,9 +84,9 @@ class ClientPostOffice(object):
             # get a message from the send_queue and then send the message to remote
             message = send_queue.get()
             send_queue.task_done()
-            info("a message has sent to remote", "info")
             try:
                 mySocket.send(message)
+                info("a message has sent to remote", "info")
             except Exception as e:
                 info(e, "error")
                 break
@@ -107,11 +107,10 @@ class ClientPostOffice(object):
             try:
                 message = connection.recv(1024)
                 info("receive message from remote: %s" % message, "info")
+                receive_queue.put("%s" % (message))
             except Exception as e:
                 info(e, "error")
                 return
-
-            receive_queue.put("%s" % (message))
 
 class PostMan(object):
     """docstring for PostMan"""
@@ -130,7 +129,7 @@ class PostMan(object):
         self.chart_t2.start()
 
     def start_search(self):
-        self.server_t = threading.Thread(target=self.serverPostOffice.getUser, args=(username_local,config.server_name))
+        self.server_t = threading.Thread(target=self.serverPostOffice.getUser, args=(username_local, server_name_local))
         self.server_t.start()
 
     def stop_work(self):
@@ -149,7 +148,8 @@ class PostMan(object):
         if receive_queue.empty():
             return None
         remote_message = receive_queue.get()
-        package = letter()
+        receive_queue.task_done()
+        package = letter.letter()
         package.materialize(remote_message)
         if package.message["close"] == True:
             stop_work()
