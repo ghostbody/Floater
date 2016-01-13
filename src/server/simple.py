@@ -16,11 +16,9 @@ def clientthread(connection, address):
         try:
             buf = connection.recv(1024)
             data = json.loads(buf)
-            print buf
-            print data
             if data["action"] == "login":
-                newUser = auser.login(data["username"], address[0])
-                print "[FLOATER LOGIN] ", address
+                newUser = auser.login(data["username"], data["ip"])
+                print "[FLOATER LOGIN] ", data["ip"]
                 connection.send(json.dumps(newUser))
             elif data["action"] == "find":
                 result = auser.findFellow()
@@ -28,7 +26,6 @@ def clientthread(connection, address):
                 connection.send(str(result))
             elif data["action"] == "logout":
                 auser.logout()
-                print "[FLOATER FIND FELLOW] user:", address, "find", result
                 connection.send(str("{statu: OK}"))
             elif data["action"] == "close":
                 print"[FLOATER CLOSE CONNECTION] ", address
@@ -42,6 +39,7 @@ def clientthread(connection, address):
             print"[FLOATER CLOSE CONNECTION] ", address
             print e, traceback.print_exc()
             connection.close()
+            exit()
             return
         time.sleep(1)
     #came out of loop
