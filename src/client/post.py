@@ -39,7 +39,7 @@ username_local = ""
 username_remote = ""
 server_name_remote = ""
 # server_name_local  = socket.gethostbyname(socket.gethostname())
-server_name_local = "192.168.1.159"
+server_name_local = config.server_name_local
 
 class ServerPostOffice(object):
     """docstring for ServerPostOffice"""

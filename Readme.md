@@ -12,6 +12,9 @@
 
 龙嘉伟 Jiawei Long
 
+## Github Address
+[https://github.com/ghostbody/computer-network](https://github.com/ghostbody/computer-network)
+
 ## Docs
 [Protocol 0.5](https://github.com/ghostbody/computer-network/blob/master/doc/protocolV0.5.md) protocol prototype
 
@@ -19,8 +22,44 @@
 
 Python 2.7
 PyQt4
+QtWebKit
 
-Any Operating System is available.
+Any Operating System is available.(Linux have a bug about chinese path name)
+
+## How to Run?
+### Step1: config IP address for the server:
+Modify the true ip address that the server computer is.
+cd $project$/src/server/
+edit config.py
+```python
+# server config
+server_name = "192.168.1.159" # this is the server ip
+server_port = 8003  # this is the server port
+```
+Note that if your client or other software has alreay occupied the port, you should change the port to resolve the confilct.
+
+### Step2: config IP address for the client(s)
+Modify the true ip address that the client computer is.
+cd $project$/src/client/
+edit config.py
+```python
+server_name = "192.168.1.159"   # this should be the same as the ip in server end
+server_name_local = "192.168.1.207"  # this should be the ip address of the client ip
+server_port = 8001            # this should be the port to communicate with server, the same with server
+remote_server_port = 8003   # this is the port for remote client
+image_server_port = 8004    # this is the port for image tansfering thread
+```
+Note that if your client or other software has alreay occupied the port, you should change the port to resolve the confilct.
+
+### Step3: Run Server
+Run the server Script
+In windows simply click the runServer.bat
+
+### Step4: Run Client
+Run the client Script
+In windows simply click the runClient.bat
+
+
 
 ## Notice
 ### 每次写代码和文档之前请执行git fetch更新fork和源仓库同步
