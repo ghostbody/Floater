@@ -63,6 +63,7 @@ $(document).ready(function() {
     message_send = $("#message").val();
     sendMessage(message_send)
     $("#message").val("");
+    $("#messageButton").hide();
     $("#extendButton").show();
   });
 });
