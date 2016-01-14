@@ -1,4 +1,4 @@
 main:
 	python main.py
 clean:
-	rm *.pyc *~
+	rm -f *.pyc *~

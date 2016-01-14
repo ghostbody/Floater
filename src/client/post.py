@@ -6,6 +6,16 @@ import time
 import threading
 import Queue
 
+from random import Random
+def random_str(randomlength=20):
+    str = ''
+    chars = 'AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz0123456789'
+    length = len(chars) - 1
+    random = Random()
+    for i in range(randomlength):
+        str+=chars[random.randint(0, length)]
+    return str
+
 import letter
 import user
 
@@ -34,6 +44,7 @@ class ServerPostOffice(object):
 
     def getUser(self, username, server):
     	#连接服务器
+        time.sleep(3)
     	try:
     		sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     		sock.connect((config.server_name, config.remote_server_port))
@@ -56,7 +67,7 @@ class ServerPostOffice(object):
     			userData = json.loads(fellow)
     			u.set(userData)
     			break
-    		time.sleep(5)
+    		time.sleep(3)
     	sock.send('{"action":"close"}')
     	sock.close()
         global username_remote
@@ -144,7 +155,7 @@ class ClientImagePostOffice(object):
             except Exception as e:
                 info(e, "error")
                 break
-	
+
 	#I use a local filepath to save the picture.When you need to show the image, you can look it up.
 	#the image name will be ./image/target
     def receive(self, username, server_name_remote):
@@ -159,19 +170,19 @@ class ClientImagePostOffice(object):
         info("start receive thread", "info")
         connection, address = mySocket.accept()
         info("connection accepted", "info")
-		f = open('./image/target', 'wb')
+        f = open('./image/%s' % random_str(), 'wb')
         while True:
             try:
                 message = connection.recv(1024)
-				if data == 'EOF'
+                if data == 'EOF':
 					info("receive image from remote", "info")
 					break;
-				f.write(message)
+                f.write(message)
             except Exception as e:
                 info(e, "error")
                 return
 		f.close()
-		
+
 class PostMan(object):
     """docstring for PostMan"""
     clientPostOffice = ClientPostOffice()
@@ -185,7 +196,7 @@ class PostMan(object):
         args=(username_remote, server_name_local))
         self.chart_t2 = threading.Thread(target=self.clientPostOffice.send, \
         args=(username_local, server_name_remote))
-		self.chart_t3 = threading.Thread(target=self.clientImagePostOffice.receive,\
+        self.chart_t3 = threading.Thread(target=self.clientImagePostOffice.receive,\
         args=(username_remote, server_name_local))
         self.chart_t4 = threading.Thread(target=self.clientImagePostOffice.send, \
         args=(username_local, server_name_remote))
@@ -208,18 +219,18 @@ class PostMan(object):
         send_queue.put(package.serialize())
 
     def post_image(self, image_path, username_local, user_remote):
-	    # here need to be modified
-		f = open(image_path, 'rb')
-		package = letter.letter()
-		package.set_user(username_local, username_remote)
-		package.set_image('./image/target')
-        while True: 
-            data = f.read(4096) 
-            if not data: 
+        # here need to be modified
+        f = open(image_path, 'rb')
+        package = letter.letter()
+        package.set_user(username_local, username_remote)
+        package.set_image('./image/%s' % random_str())
+        while True:
+            data = f.read(4096)
+            if not data:
                 break
-            image_send_queue.put(data) 
+            image_send_queue.put(data)
         f.close()
-        time.sleep(1) 
+        time.sleep(1)
         image_send_queue.put('EOF')
 
     def get(self):
