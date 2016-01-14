@@ -5,6 +5,11 @@ import json
 import time
 import threading
 import Queue
+import os.path
+
+import sys
+reload(sys)
+sys.setdefaultencoding('utf8')
 
 from random import Random
 def random_str(randomlength=20):
@@ -114,7 +119,7 @@ class ClientPostOffice(object):
             info('connect failed. Error Code : %s %s' % (str(msg[0]), msg[1]), "error")
             return False
         mySocket.listen(100)
-        info("start receive thread", "info")
+        info("start image receive thread", "info")
         connection, address = mySocket.accept()
         info("connection accepted", "info")
         while True:
@@ -136,22 +141,22 @@ class ClientImagePostOffice(object):
         mySocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         # wait 1 second before connection
         time.sleep(1)
-
         while True:
             try:
-                mySocket.connect((server_name_remote, config.server_port))
+                mySocket.connect((server_name_remote, config.image_server_port))
                 break;
             except socket.error, msg:
                 info('connect failed. Error Code : %s %s' % (str(msg[0]), msg[1]), "error")
                 time.sleep(1)
-        info("start send thread", "info")
+        info("start send iamge thread", "info")
         while True:
             # get a message from the send_queue and then send the message to remote
             message = image_send_queue.get()
             image_send_queue.task_done()
             try:
                 mySocket.send(message)
-                info("an image is sent to remote", "info")
+                if message == "EOF":
+                    info("an image is sent to remote", "info")
             except Exception as e:
                 info(e, "error")
                 break
@@ -162,7 +167,7 @@ class ClientImagePostOffice(object):
         mySocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         time.sleep(1)
         try:
-            mySocket.bind((server_name_remote, config.server_port))
+            mySocket.bind((server_name_remote, config.image_server_port))
         except socket.error, msg:
             info('connect failed. Error Code : %s %s' % (str(msg[0]), msg[1]), "error")
             return False
@@ -170,18 +175,27 @@ class ClientImagePostOffice(object):
         info("start receive thread", "info")
         connection, address = mySocket.accept()
         info("connection accepted", "info")
-        f = open('./image/%s' % random_str(), 'wb')
         while True:
-            try:
-                message = connection.recv(1024)
-                if data == 'EOF':
-					info("receive image from remote", "info")
-					break;
-                f.write(message)
-            except Exception as e:
-                info(e, "error")
-                return
-		f.close()
+            postfix = connection.recv(1024)
+            print postfix
+            filename = random_str() + ".%s" % postfix
+            f = open(unicode(os.path.join(os.path.abspath('.'), "utf8"), "image", filename), 'wb')
+            while True:
+                try:
+                    data = connection.recv(1024)
+                    if data == 'EOF':
+            			info("receive image from remote", "info")
+            			break;
+                    f.write(data)
+                except Exception as e:
+                    info(e, "error")
+                    return
+            f.close()
+            package = letter.letter()
+            package.set_user(username_local, username_remote)
+            package.message["contentT"] = "Image"
+            package.message["content"] = os.path.join(unicode(os.path.abspath('.'), "utf8"), "image", filename);
+            receive_queue.put(package.serialize())
 
 class PostMan(object):
     """docstring for PostMan"""
@@ -220,11 +234,12 @@ class PostMan(object):
         send_queue.put(package.serialize())
 
     def post_image(self, image_path):
-        # here need to be modified
         f = open(image_path, 'rb')
+        postfix = os.path.splitext(image_path)[-1]
         package = letter.letter()
         package.set_user(username_local, username_remote)
         package.set_image(image_path)
+        image_send_queue.put(postfix[1:])
         while True:
             data = f.read(4096)
             if not data:

@@ -45,6 +45,11 @@ def clientthread(connection, address):
     #came out of loop
     connection.close()
 
+    time.sleep(10)
+    auser.logout()
+    print "cleared peer info"
+
+
 def test():
     mySocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 

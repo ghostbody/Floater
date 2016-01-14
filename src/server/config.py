@@ -1,4 +1,4 @@
 
 # server config
-server_name = "172.18.40.26"
+server_name = "192.168.1.159"
 server_port = 8003

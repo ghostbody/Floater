@@ -8,6 +8,7 @@ function checking() {
   if (!aval) {
     $("#login_container").hide(1000);
     $("#chartroom_container").show(1000);
+    $("#messageButton").hide();
     $("#localName").text(pyObj.username);
     $("#remoteName").text(pyObj.remotename);
     pyObj.setThreads();
@@ -46,7 +47,7 @@ function getMessage() {
     if(messageObj.type == "Text") {
       putMessage("left", messageObj.message);
     } else if(messageObj.type == "Image") {
-      putImage("left", messageObj.path);
+      putImage("left", messageObj.message);
     }
   }
 

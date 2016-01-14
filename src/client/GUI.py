@@ -58,15 +58,17 @@ class Floater(QtCore.QObject):
             return ""
         else:
             if contentT == "Text":
-                return '{"message":"%s", "type":"Text"}'
+                message = message.replace("\\", "\\\\")
+                return '{"message":"%s", "type":"Text"}' % message
             elif contentT == "Image":
-                return '{"path":"%s", "type":"Image"}'
+                message = message.replace("\\", "\\\\")
+                return '{"message":"%s", "type":"Image"}' % message
 
     @QtCore.pyqtSlot()
     def openImage(self):
-        filename = QtGui.QFileDialog.getOpenFileName(caption="Iput Image", filter="*.png *.jpg *.bmp")
+        filename = QtGui.QFileDialog.getOpenFileName(caption="Sending Image", filter="*.png *.jpg *.bmp *.gif")
         if(filename != "" and filename != None):
-            self.postMan.post_image(filename)
+            self.postMan.post_image(str(filename))
         return filename
 
     imageName = QtCore.pyqtProperty(str, fget=openImage)
