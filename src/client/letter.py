@@ -39,7 +39,7 @@ class letter(object):
         self.message["contentT"] = "Text"
         self.message["content"] = message
 
-    def set_Image(self, picture_path):
+    def set_image(self, picture_path):
         self.message["date"] = time.ctime()
         self.message["close"] = False
         self.message["contentT"] = "Image"

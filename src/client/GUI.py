@@ -51,24 +51,25 @@ class Floater(QtCore.QObject):
         # chat.send_queue.put("%s" % (message))
         self.postMan.post_message("%s" % message)
 
-	#add a button to send image, you should get the image_path of the image you decide to send first.
-	def send_(self, image_path):
-		self.postMan.post_image(image_path)
-	
     @QtCore.pyqtSlot()
     def receive(self):
-        # if chat.receive_queue.empty():
-        #     return ""
-        # message = chat.receive_queue.get()
-        # chat.receive_queue.task_done()
-        # message = message.decode('utf-8')
-        # return message
-        message = self.postMan.get()#if the object is image, the result of get will be a pathname.You can load it easily.
+        message, contentT = self.postMan.get()
         if(message == None):
             return ""
         else:
-            return message
-	
+            if contentT == "Text":
+                return '{"message":"%s", "type":"Text"}'
+            elif contentT == "Image":
+                return '{"path":"%s", "type":"Image"}'
+
+    @QtCore.pyqtSlot()
+    def openImage(self):
+        filename = QtGui.QFileDialog.getOpenFileName(caption="Iput Image", filter="*.png *.jpg *.bmp")
+        if(filename != "" and filename != None):
+            self.postMan.post_image(filename)
+        return filename
+
+    imageName = QtCore.pyqtProperty(str, fget=openImage)
     receiveMsg = QtCore.pyqtProperty(str, fget=receive)
     username = QtCore.pyqtProperty(str, fget=getUsername)
     remotename = QtCore.pyqtProperty(str, fget=getRemotename)

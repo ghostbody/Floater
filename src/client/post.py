@@ -218,12 +218,12 @@ class PostMan(object):
         package.set_message(text)
         send_queue.put(package.serialize())
 
-    def post_image(self, image_path, username_local, user_remote):
+    def post_image(self, image_path):
         # here need to be modified
         f = open(image_path, 'rb')
         package = letter.letter()
         package.set_user(username_local, username_remote)
-        package.set_image('./image/%s' % random_str())
+        package.set_image(image_path)
         while True:
             data = f.read(4096)
             if not data:
@@ -235,7 +235,7 @@ class PostMan(object):
 
     def get(self):
         if receive_queue.empty():
-            return None
+            return (None, None)
         remote_message = receive_queue.get()
         receive_queue.task_done()
         package = letter.letter()
@@ -243,8 +243,8 @@ class PostMan(object):
         if package.message["close"] == True:
             self.stop_work()
         elif package.message["contentT"] == "Text":
-            return package.message["content"]
+            return (package.message["content"], "Text")
         elif package.message["contentT"] == "Image":
-            return package.message["content"]
+            return (package.message["content"], "Image")
         else:
-            return None
+            return (None, None)

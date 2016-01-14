@@ -180,11 +180,40 @@ body {
   width: 18%;
 }
 
+.chatroom .inputbox .extendButton {
+  float: left;
+  width: 9%;
+  height: 7%;
+  margin: 1%;
+  margin-left: 11%;
+  display: table;
+  font-weight: bolder;
+}
+
+.chatroom .inputbox .extendButton span {
+  font-size: 200%;
+  color: white;
+  border: 4px white solid;
+  display: table-cell;
+  vertical-align: middle;
+  font-weight: bolder;
+  border-radius: 50%;
+}
+
 .chatroom .inputbox .button #send {
   padding-top: 15px;
   padding-bottom: 15px;
   width: 95%;
   line-height: normal;
+}
+
+#big-image {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  margin: auto;
 }
 
 .copyright {
