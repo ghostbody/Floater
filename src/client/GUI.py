@@ -51,6 +51,10 @@ class Floater(QtCore.QObject):
         # chat.send_queue.put("%s" % (message))
         self.postMan.post_message("%s" % message)
 
+	#add a button to send image, you should get the image_path of the image you decide to send first.
+	def send_(self, image_path):
+		self.postMan.post_image(image_path)
+	
     @QtCore.pyqtSlot()
     def receive(self):
         # if chat.receive_queue.empty():
@@ -59,12 +63,12 @@ class Floater(QtCore.QObject):
         # chat.receive_queue.task_done()
         # message = message.decode('utf-8')
         # return message
-        message = self.postMan.get()
+        message = self.postMan.get()#if the object is image, the result of get will be a pathname.You can load it easily.
         if(message == None):
             return ""
         else:
             return message
-
+	
     receiveMsg = QtCore.pyqtProperty(str, fget=receive)
     username = QtCore.pyqtProperty(str, fget=getUsername)
     remotename = QtCore.pyqtProperty(str, fget=getRemotename)

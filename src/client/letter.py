@@ -11,7 +11,7 @@ class letter(object):
             "destuser" : "",
             "close"    : False,
             "open"     : False,
-            "contentT" : "Text",
+            "contentT" : "",
             "content"  : "",
         }
 
@@ -36,10 +36,14 @@ class letter(object):
     def set_message(self, message):
         self.message["date"] = time.ctime()
         self.message["close"] = False
+		self.message["contentT"] = "Text"
         self.message["content"] = message
 
-    def set_picture(self, picture_path):
-        pass
+    def set_Image(self, picture_path):
+		self.message["date"] = time.ctime()
+        self.message["close"] = False
+		self.message["contentT"] = "Image"
+        self.message["content"] = picture_path
 
     def set_audio(self, audio_path):
         pass
