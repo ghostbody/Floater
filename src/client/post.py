@@ -17,6 +17,9 @@ send_queue = Queue.Queue()
 # message receive queue
 receive_queue = Queue.Queue()
 
+#image sending queue
+image_send_queue = Queue.Queue()
+
 username_local = ""
 username_remote = ""
 server_name_remote = ""
@@ -112,6 +115,63 @@ class ClientPostOffice(object):
                 info(e, "error")
                 return
 
+class ClientImagePostOffice(object):
+    """docstring for PostOffice"""
+    def __init__(self):
+        pass
+
+    def send(self, username, server_name_remote):
+        """This function is use for sending threading"""
+        mySocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        # wait 1 second before connection
+        time.sleep(1)
+
+        while True:
+            try:
+                mySocket.connect((server_name_remote, config.server_port))
+                break;
+            except socket.error, msg:
+                info('connect failed. Error Code : %s %s' % (str(msg[0]), msg[1]), "error")
+                time.sleep(1)
+        info("start send thread", "info")
+        while True:
+            # get a message from the send_queue and then send the message to remote
+            message = image_send_queue.get()
+            image_send_queue.task_done()
+            try:
+                mySocket.send(message)
+                info("an image is sent to remote", "info")
+            except Exception as e:
+                info(e, "error")
+                break
+	
+	#I use a local filepath to save the picture.When you need to show the image, you can look it up.
+	#the image name will be ./image/target
+    def receive(self, username, server_name_remote):
+        mySocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        time.sleep(1)
+        try:
+            mySocket.bind((server_name_remote, config.server_port))
+        except socket.error, msg:
+            info('connect failed. Error Code : %s %s' % (str(msg[0]), msg[1]), "error")
+            return False
+        mySocket.listen(100)
+        info("start receive thread", "info")
+        connection, address = mySocket.accept()
+        info("connection accepted", "info")
+		f = open('./image/target', 'wb')
+        while True:
+            try:
+                message = connection.recv(1024)
+				if data == 'EOF'
+					info("receive image from remote", "info")
+					break;
+				f.write(message)
+            except Exception as e:
+                info(e, "error")
+                return
+		f.close()
+		
 class PostMan(object):
     """docstring for PostMan"""
     clientPostOffice = ClientPostOffice()
@@ -125,8 +185,14 @@ class PostMan(object):
         args=(username_remote, server_name_local))
         self.chart_t2 = threading.Thread(target=self.clientPostOffice.send, \
         args=(username_local, server_name_remote))
+		self.chart_t3 = threading.Thread(target=self.clientImagePostOffice.receive,\
+        args=(username_remote, server_name_local))
+        self.chart_t4 = threading.Thread(target=self.clientImagePostOffice.send, \
+        args=(username_local, server_name_remote))
         self.chart_t1.start()
         self.chart_t2.start()
+        self.chart_t3.start()
+        self.chart_t4.start()
 
     def start_search(self):
         self.server_t = threading.Thread(target=self.serverPostOffice.getUser, args=(username_local, server_name_local))
@@ -142,7 +208,19 @@ class PostMan(object):
         send_queue.put(package.serialize())
 
     def post_image(self, image_path, username_local, user_remote):
-        pass
+	    # here need to be modified
+		f = open(image_path, 'rb')
+		package = letter.letter()
+		package.set_user(username_local, username_remote)
+		package.set_image('./image/target')
+        while True: 
+            data = f.read(4096) 
+            if not data: 
+                break
+            image_send_queue.put(data) 
+        f.close()
+        time.sleep(1) 
+        image_send_queue.put('EOF')
 
     def get(self):
         if receive_queue.empty():
@@ -156,7 +234,6 @@ class PostMan(object):
         elif package.message["contentT"] == "Text":
             return package.message["content"]
         elif package.message["contentT"] == "Image":
-            # here need to be modified
-            return None
+            return package.message["content"]
         else:
             return None
