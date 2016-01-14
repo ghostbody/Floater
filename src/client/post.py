@@ -187,6 +187,7 @@ class PostMan(object):
     """docstring for PostMan"""
     clientPostOffice = ClientPostOffice()
     serverPostOffice = ServerPostOffice()
+    clientImagePostOffice = ClientImagePostOffice()
 
     def __init__(self):
         super(PostMan, self).__init__()
